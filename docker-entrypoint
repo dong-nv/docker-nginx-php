@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ "$PHP_FPM_HOST" = "" ]; then
+    missing="$missing\n    PHP_FPM_HOST"
+fi
+
+if [ "$missing" != "" ]; then
+    echo "Missing environment variable:"
+    echo -e "$missing"
+    exit 1
+fi
+
+envsubst < /etc/nginx/conf.d/default.conf | tee /etc/nginx/conf.d/default.conf
+
+exec "$@"
